@@ -3,9 +3,9 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
 import { Pressable } from 'react-native';
 
-import Colors from '@/src/constants/Colors';
-import { useColorScheme } from '@/src/components/useColorScheme';
-import { useClientOnlyValue } from '@/src/components/useClientOnlyValue';
+import Colors from '@/constants/Colors';
+import { useColorScheme } from '@components/useColorScheme';
+import { useClientOnlyValue } from '@components/useClientOnlyValue';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -14,7 +14,7 @@ function TabBarIcon(props: {
 }) {
 	return (
 		<FontAwesome
-			size={28}
+			size={20}
 			style={{ marginBottom: -3 }}
 			{...props}
 		/>
@@ -37,10 +37,10 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name='index'
 				options={{
-					title: 'Tab One',
+					title: 'Menu',
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon
-							name='code'
+							name='cutlery'
 							color={color}
 						/>
 					),
@@ -53,7 +53,7 @@ export default function TabLayout() {
 								{({ pressed }) => (
 									<FontAwesome
 										name='info-circle'
-										size={25}
+										size={20}
 										color={
 											Colors[colorScheme ?? 'light'].text
 										}
@@ -71,10 +71,10 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name='two'
 				options={{
-					title: 'Tab Two',
+					title: 'Orders',
 					tabBarIcon: ({ color }) => (
 						<TabBarIcon
-							name='code'
+							name='list'
 							color={color}
 						/>
 					),
