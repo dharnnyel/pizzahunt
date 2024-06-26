@@ -5,7 +5,7 @@ export type Product = {
   price: number;
 };
 
-declare type PizzaSize = 'S' | 'M' | 'L' | 'XL';
+export type PizzaSize = 'S' | 'M' | 'L' | 'XL';
 
 declare type CartItem = {
   id: string;

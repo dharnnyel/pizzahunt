@@ -22,7 +22,7 @@ const ProductListItem: React.FC<ProductListItemProps> = ({
 }) => {
 	return (
 		<Link
-			href={`/${product.id }`}
+			href={`/menu/${product.id }`}
 			asChild
 		>
 			<Pressable style={styles.container}>
