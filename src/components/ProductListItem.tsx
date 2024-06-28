@@ -6,7 +6,6 @@ import {
 	Pressable,
 } from 'react-native';
 import React from 'react';
-import { Product } from '@/types';
 import Colors from '@/constants/Colors';
 import { Link } from 'expo-router';
 
@@ -22,7 +21,7 @@ const ProductListItem: React.FC<ProductListItemProps> = ({
 }) => {
 	return (
 		<Link
-			href={`/menu/${product.id }`}
+			href={`/menu/${product.id}`}
 			asChild
 		>
 			<Pressable style={styles.container}>
