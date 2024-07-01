@@ -8,6 +8,7 @@ import {
 import React, { useState } from 'react';
 import Colors from '@/constants/Colors';
 import {
+	Link,
 	Stack,
 	router,
 	useLocalSearchParams,
@@ -16,6 +17,7 @@ import products from '@assets/data/products';
 import { defaultPizzaImage } from '@/components/ProductListItem';
 import Button from '@/components/Button';
 import { useCart } from '@/providers/CartProvider';
+import { FontAwesome } from '@expo/vector-icons';
 
 const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL'];
 
@@ -42,6 +44,32 @@ const ProductDetails = () => {
 
 	return (
 		<View style={styles.container}>
+			<Stack.Screen
+				options={{
+					title: 'Menu',
+					headerRight: () => (
+						<Link
+							href={`/(admin)/menu/create?id=${id}`}
+							asChild
+						>
+							<Pressable>
+								{({ pressed }) => (
+									<FontAwesome
+										name='pencil'
+										size={20}
+										color={Colors.light.tint}
+										style={{
+											marginRight: 15,
+											opacity: pressed ? 0.5 : 1,
+										}}
+									/>
+								)}
+							</Pressable>
+						</Link>
+					),
+				}}
+			/>
+
 			<Stack.Screen options={{ title: product.name }} />
 			<Image
 				source={{ uri: product.image || defaultPizzaImage }}
