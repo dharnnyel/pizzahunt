@@ -62,11 +62,11 @@ function RootLayoutNav() {
 			<CartProvider>
 				<Stack>
 					<Stack.Screen
-						name='(user)'
+						name='(admin)'
 						options={{ headerShown: false }}
 					/>
 					<Stack.Screen
-						name='(admin)'
+						name='(user)'
 						options={{ headerShown: false }}
 					/>
 					<Stack.Screen

@@ -13,7 +13,7 @@ const MenuLayout = () => {
 					title: 'Menu',
 					headerRight: () => (
 						<Link
-							href='/create'
+							href='/(admin)/menu/create'
 							asChild
 						>
 							<Pressable>
