@@ -1,4 +1,3 @@
-import { Order } from '../../types/global';
 import products from './products';
 import dayjs from 'dayjs';
 
