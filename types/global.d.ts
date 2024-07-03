@@ -49,9 +49,4 @@ declare global {
 
 export {};
 
-// export const OrderStatusList: OrderStatus[] = [
-// 	'New',
-// 	'Cooking',
-// 	'Delivering',
-// 	'Delivered',
-// ];
+

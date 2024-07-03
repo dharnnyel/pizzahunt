@@ -10,6 +10,7 @@ import orders from '@assets/data/orders';
 import products from '@assets/data/products';
 import OrderListItem from '@/components/OrderListItem';
 import OrderItemListItem from '@/components/OrderItemListItem';
+import StatusSelector from '@/components/StatusSelector';
 
 const OrderDetails = () => {
 	const { id } = useLocalSearchParams();
@@ -36,6 +37,9 @@ const OrderDetails = () => {
 					<OrderItemListItem item={item} />
 				)}
 				contentContainerStyle={{ gap: 10 }}
+				ListFooterComponent={() => (
+					<StatusSelector order={order} />
+				)}
 			/>
 		</View>
 	);
