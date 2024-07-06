@@ -22,7 +22,6 @@ const OrderListItem: React.FC<OrderListItemProps> = ({
 
 	return (
 		<Link
-			// href={`../orders/${order.id}`}
 			href={`${segments[0]}/orders/${order.id}`}
 			asChild
 		>

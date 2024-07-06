@@ -25,8 +25,7 @@ const ProductListItem: React.FC<ProductListItemProps> = ({
 
 	return (
 		<Link
-			href={`../menu/${product.id}`}
-			// href={`${segments[0]}/menu/${product.id}`}
+			href={`${segments[0]}/menu/${product.id}`}
 			asChild
 		>
 			<Pressable style={styles.container}>
