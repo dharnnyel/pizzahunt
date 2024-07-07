@@ -1,4 +1,5 @@
 import {
+	Alert,
 	StyleSheet,
 	Text,
 	TextInput,
@@ -8,12 +9,25 @@ import React, { useState } from 'react';
 import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
 import { Link, Stack } from 'expo-router';
+import { supabase } from '@/lib/supabase';
 
 const SignUp = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const onSubmit = () => {};
+
+	const signUpWithEmail = async () => {
+		setLoading(true);
+		const { error } = await supabase.auth.signUp({
+			email,
+			password,
+		});
+
+		if (error) Alert.alert(error.message);
+		setLoading(false);
+	};
 
 	return (
 		<View style={styles.container}>
@@ -40,8 +54,9 @@ const SignUp = () => {
 			</View>
 
 			<Button
-				text='Create Account'
-				onPress={onSubmit}
+				text={loading ? 'Creating Account...' : 'Create Account'}
+				onPress={signUpWithEmail}
+				disabled={loading}
 			/>
 
 			<Link
