@@ -6,13 +6,23 @@ import {
 	Image,
 	Alert,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
 import Colors from '@/constants/Colors';
 import Button from '@/components/Button';
 import { defaultPizzaImage } from '@/components/ProductListItem';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import {
+	router,
+	Stack,
+	useLocalSearchParams,
+} from 'expo-router';
+import {
+	useCreateProduct,
+	useDeleteProduct,
+	useProduct,
+	useUpdateProduct,
+} from '@/api/products';
 
 const CreateProduct = () => {
 	const [name, setName] = useState('');
@@ -20,9 +30,31 @@ const CreateProduct = () => {
 	const [errors, setErrors] = useState('');
 	const [image, setImage] = useState<string | null>(null);
 
-	const { id } = useLocalSearchParams();
+	const searchParam = useLocalSearchParams();
+
+	const stringId = searchParam.id ?? '';
+	const id = parseFloat(
+		typeof stringId === 'string' && stringId !== ''
+			? stringId
+			: stringId[0]
+	);
 
 	const isUpdating = !!id;
+
+	const { mutate: insertProduct } = useCreateProduct();
+	const { mutate: updateProduct } = useUpdateProduct();
+	const { data: updatingProduct } = useProduct(id);
+	const { mutate: deleteProduct } = useDeleteProduct();
+
+	console.log(updatingProduct);
+
+	useEffect(() => {
+		if (updatingProduct) {
+			setName(updatingProduct.name);
+			setPrice(updatingProduct.price.toString());
+			setImage(updatingProduct.image);
+		}
+	}, [updatingProduct]);
 
 	const resetFields = () => {
 		setName('');
@@ -51,10 +83,19 @@ const CreateProduct = () => {
 			return;
 		}
 
-		// TODO: code to store data in the database
-		console.warn('Creating Product', { name, price });
-
-		resetFields();
+		insertProduct(
+			{
+				name,
+				price: parseFloat(price),
+				image,
+			},
+			{
+				onSuccess: () => {
+					resetFields();
+					router.back();
+				},
+			}
+		);
 	};
 
 	const onUpdate = () => {
@@ -62,14 +103,32 @@ const CreateProduct = () => {
 			return;
 		}
 
-		// TODO: code to store data in the database
-		console.warn('Updating Product', { name, price });
-
-		resetFields();
+		updateProduct(
+			{
+				id,
+				name,
+				price: parseFloat(price),
+				image,
+			},
+			{
+				onSuccess: () => {
+					resetFields();
+					router.back();
+				},
+			}
+		);
 	};
 
 	const onDelete = () => {
-		console.warn('Do you wanna delete this product?');
+		deleteProduct(
+			{ id },
+			{
+				onSuccess: () => {
+					resetFields();
+					router.replace('/(admin)');
+				},
+			}
+		);
 	};
 
 	const confirmDelete = () => {

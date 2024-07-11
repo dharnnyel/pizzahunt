@@ -4,6 +4,7 @@ import {
 	StyleSheet,
 	Image,
 	Pressable,
+	ActivityIndicator,
 } from 'react-native';
 import React, { useState } from 'react';
 import Colors from '@/constants/Colors';
@@ -18,22 +19,37 @@ import { defaultPizzaImage } from '@/components/ProductListItem';
 import Button from '@/components/Button';
 import { useCart } from '@/providers/CartProvider';
 import { FontAwesome } from '@expo/vector-icons';
+import { useProduct } from '@/api/products';
 
 const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL'];
 
 const ProductDetails = () => {
-	const { id } = useLocalSearchParams();
+	const searchParam = useLocalSearchParams();
+
+	const stringId = searchParam.id ?? '';
+	const id = parseFloat(
+		typeof stringId === 'string' && stringId !== ''
+			? stringId
+			: stringId[0]
+	);
+
+	const {
+		data: product,
+		error,
+		isLoading,
+	} = useProduct(id);
+
 	const [selectedSize, setSelectedSize] =
 		useState<PizzaSize>('S');
 
 	const { addItem } = useCart();
 
-	const product = products.find(
-		product => product.id.toString() === id
-	);
+	if (isLoading) {
+		return <ActivityIndicator />;
+	}
 
-	if (!product) {
-		return <Text>Product not found</Text>;
+	if (error) {
+		return <Text>Failed to fetch product data</Text>;
 	}
 
 	const addToCart = () => {
@@ -76,52 +92,8 @@ const ProductDetails = () => {
 				style={styles.image}
 			/>
 
-			{/* TODO: FIGURE HOW TO DISPLAY AVAILABLE SIZES */}
-			{/* <Text style={{ color: Colors.dark.tint }}>
-				Available Sizes
-			</Text>
-
-			<View style={styles.sizes}>
-				{sizes.map(size => (
-					<Pressable
-						onPress={() => {
-							setSelectedSize(size);
-						}}
-						key={size}
-						style={[
-							styles.size,
-							{
-								backgroundColor:
-									selectedSize === size
-										? Colors.light.tint
-										: 'transparent',
-							},
-						]}
-					>
-						<Text
-							style={[
-								styles.sizeText,
-								{
-									color:
-										selectedSize === size
-											? Colors.dark.tint
-											: 'gray',
-								},
-							]}
-						>
-							{size}
-						</Text>
-					</Pressable>
-				))}
-			</View> */}
-
 			<Text style={styles.title}>{product.name}</Text>
 			<Text style={styles.price}>${product.price}</Text>
-
-			{/* <Button
-				text='Add to Cart'
-				onPress={addToCart}
-			/> */}
 		</View>
 	);
 };
