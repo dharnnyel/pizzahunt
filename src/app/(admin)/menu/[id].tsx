@@ -53,7 +53,7 @@ const ProductDetails = () => {
 	}
 
 	const addToCart = () => {
-		addItem(product, selectedSize);
+		addItem(product!, selectedSize);
 
 		router.push('/cart');
 	};

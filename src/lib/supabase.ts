@@ -1,3 +1,4 @@
+import { Database } from '@/database.types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 import * as SecureStore from 'expo-secure-store';
@@ -19,7 +20,7 @@ const supabaseUrl =
 const supabaseAnonKey =
 	process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(
+export const supabase = createClient<Database>(
 	supabaseUrl,
 	supabaseAnonKey,
 	{

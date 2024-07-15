@@ -1,16 +1,9 @@
 declare global {
-	type Product = {
-		id: number;
-		image: string | null;
-		name: string;
-		price: number;
-	};
-
 	type PizzaSize = 'S' | 'M' | 'L' | 'XL';
 
 	type CartItem = {
 		id: string;
-		product: Product;
+		product: Ta;
 		product_id: number;
 		size: PizzaSize;
 		quantity: number;
@@ -48,5 +41,3 @@ declare global {
 }
 
 export {};
-
-

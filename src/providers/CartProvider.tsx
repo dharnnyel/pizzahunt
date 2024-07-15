@@ -5,6 +5,9 @@ import {
 	useContext,
 	useState,
 } from 'react';
+import { Tables } from 'types/database';
+
+type Product = Tables<'products'>;
 
 type CartType = {
 	items: CartItem[];

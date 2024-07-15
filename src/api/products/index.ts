@@ -109,15 +109,11 @@ const useDeleteProduct = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		async mutationFn(productData: any) {
+		async mutationFn(id: number) {
 			const { data, error } = await supabase
 				.from('products')
 				.delete()
-				.eq('id', productData.id);
-
-			if (error) {
-				throw new Error(error.message);
-			}
+				.eq('id', id);
 		},
 		async onSuccess() {
 			await queryClient.invalidateQueries({

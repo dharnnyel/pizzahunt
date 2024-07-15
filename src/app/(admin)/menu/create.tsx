@@ -120,15 +120,12 @@ const CreateProduct = () => {
 	};
 
 	const onDelete = () => {
-		deleteProduct(
-			{ id },
-			{
-				onSuccess: () => {
-					resetFields();
-					router.replace('/(admin)');
-				},
-			}
-		);
+		deleteProduct(id, {
+			onSuccess: () => {
+				resetFields();
+				router.replace('/(admin)');
+			},
+		});
 	};
 
 	const confirmDelete = () => {
