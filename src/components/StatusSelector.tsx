@@ -6,9 +6,10 @@ import {
 } from 'react-native';
 import React from 'react';
 import Colors from '@/constants/Colors';
+import { Tables } from '@/database';
 
 type StatusSelectorProps = {
-	order: Order;
+	order: Tables<'orders'>;
 };
 
 const OrderStatusList: OrderStatus[] = [
@@ -35,6 +36,7 @@ const StatusSelector: React.FC<StatusSelectorProps> = ({
 				{OrderStatusList.map(status => (
 					<Pressable
 						key={status}
+						// TODO: ADD FUNCTIONALITY FOR CHANGING THE STATUS OF AN ORDER
 						onPress={() => console.warn('Update status')}
 						style={{
 							borderColor: Colors.light.tint,

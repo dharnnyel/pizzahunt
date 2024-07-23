@@ -8,11 +8,12 @@ import React from 'react';
 import { Link, useSegments } from 'expo-router';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { Tables } from '@/database';
 
 dayjs.extend(relativeTime);
 
 type OrderListItemProps = {
-	order: Order;
+	order: Tables<'orders'>;
 };
 
 const OrderListItem: React.FC<OrderListItemProps> = ({

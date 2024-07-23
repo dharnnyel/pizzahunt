@@ -49,9 +49,10 @@ const CreateProduct = () => {
 	console.log(updatingProduct);
 
 	useEffect(() => {
+		const updateProduct = updatingProduct!;
 		if (updatingProduct) {
 			setName(updatingProduct.name);
-			setPrice(updatingProduct.price.toString());
+			setPrice(updatingProduct.price?.toString() || '');
 			setImage(updatingProduct.image);
 		}
 	}, [updatingProduct]);

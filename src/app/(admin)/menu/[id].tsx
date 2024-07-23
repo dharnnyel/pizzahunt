@@ -86,14 +86,16 @@ const ProductDetails = () => {
 				}}
 			/>
 
-			<Stack.Screen options={{ title: product.name }} />
+			<Stack.Screen options={{ title: product?.name }} />
 			<Image
-				source={{ uri: product.image || defaultPizzaImage }}
+				source={{
+					uri: product?.image || defaultPizzaImage,
+				}}
 				style={styles.image}
 			/>
 
-			<Text style={styles.title}>{product.name}</Text>
-			<Text style={styles.price}>${product.price}</Text>
+			<Text style={styles.title}>{product?.name}</Text>
+			<Text style={styles.price}>${product?.price}</Text>
 		</View>
 	);
 };
@@ -119,23 +121,4 @@ const styles = StyleSheet.create({
 		fontSize: 22,
 		fontWeight: '800',
 	},
-	// sizes: {
-	// 	flex: 1,
-	// 	flexDirection: 'row',
-	// 	marginVertical: 10,
-	// 	justifyContent: 'space-around',
-	// },
-	// size: {
-	// 	backgroundColor: 'gainsboro',
-	// 	width: 50,
-	// 	aspectRatio: 1,
-	// 	justifyContent: 'center',
-	// 	alignItems: 'center',
-	// 	borderRadius: 25,
-	// },
-	// sizeText: {
-	// 	color: Colors.dark.tint,
-	// 	fontSize: 20,
-	// 	fontWeight: '500',
-	// },
 });

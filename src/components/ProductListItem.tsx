@@ -7,7 +7,7 @@ import {
 import React from 'react';
 import Colors from '@/constants/Colors';
 import { Link, useSegments } from 'expo-router';
-import { Tables } from 'types/database';
+import { Tables } from '@/database';
 
 export const defaultPizzaImage =
 	'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png';

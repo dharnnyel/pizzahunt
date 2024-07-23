@@ -1,4 +1,5 @@
 import {
+	ActivityIndicator,
 	FlatList,
 	StyleSheet,
 	Text,
@@ -11,16 +12,34 @@ import products from '@assets/data/products';
 import OrderListItem from '@/components/OrderListItem';
 import OrderItemListItem from '@/components/OrderItemListItem';
 import StatusSelector from '@/components/StatusSelector';
+import { useOrderDetails } from '@/api/orders';
 
 const OrderDetails = () => {
-	const { id } = useLocalSearchParams();
+	const searchParam = useLocalSearchParams();
 
-	const order = orders.find(
-		order => order.id.toString() === id
+	const stringId = searchParam.id ?? '';
+	const id = parseFloat(
+		typeof stringId === 'string' && stringId !== ''
+			? stringId
+			: stringId[0]
 	);
+
+	const {
+		data: order,
+		error,
+		isLoading,
+	} = useOrderDetails(id);
 
 	if (!order) {
 		return <Text>Order not found</Text>;
+	}
+
+	if (isLoading) {
+		return <ActivityIndicator />;
+	}
+
+	if (error) {
+		return <Text>Failed to fetch</Text>;
 	}
 
 	return (

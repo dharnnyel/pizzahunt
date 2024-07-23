@@ -1,4 +1,5 @@
 import {
+	ActivityIndicator,
 	FlatList,
 	StyleSheet,
 	Text,
@@ -10,16 +11,34 @@ import orders from '@assets/data/orders';
 import products from '@assets/data/products';
 import OrderListItem from '@/components/OrderListItem';
 import OrderItemListItem from '@/components/OrderItemListItem';
+import { useOrderDetails } from '@/api/orders';
 
 const OrderDetails = () => {
-	const { id } = useLocalSearchParams();
+	const searchParam = useLocalSearchParams();
 
-	const order = orders.find(
-		order => order.id.toString() === id
+	const stringId = searchParam.id ?? '';
+	const id = parseFloat(
+		typeof stringId === 'string' && stringId !== ''
+			? stringId
+			: stringId[0]
 	);
+
+	const {
+		data: order,
+		error,
+		isLoading,
+	} = useOrderDetails(id);
 
 	if (!order) {
 		return <Text>Order not found</Text>;
+	}
+
+	if (isLoading) {
+		return <ActivityIndicator />;
+	}
+
+	if (error) {
+		return <Text>Failed to fetch</Text>
 	}
 
 	return (
@@ -31,9 +50,11 @@ const OrderDetails = () => {
 			<OrderListItem order={order} />
 
 			<FlatList
-				data={order.order_items}
-        renderItem={({ item }) => <OrderItemListItem item={item} />}
-        contentContainerStyle={{gap: 10}}
+				data={order}
+				renderItem={({ item }) => (
+					<OrderItemListItem item={item} />
+				)}
+				contentContainerStyle={{ gap: 10 }}
 			/>
 		</View>
 	);

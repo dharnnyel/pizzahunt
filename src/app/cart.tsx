@@ -12,7 +12,7 @@ import Button from '@/components/Button';
 import Colors from '@/constants/Colors';
 
 const Cart = () => {
-	const { items, totalAmount } = useCart();
+	const { items, totalAmount, checkOut } = useCart();
 
 	return (
 		<View style={{ padding: 15 }}>
@@ -36,7 +36,7 @@ const Cart = () => {
 					>
 						Total: ${totalAmount}
 					</Text>
-					<Button text='Checkout' />
+					<Button text='Checkout' onPress={checkOut} />
 				</>
 			) : (
 				<Text
