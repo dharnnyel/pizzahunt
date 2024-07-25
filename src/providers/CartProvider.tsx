@@ -5,9 +5,10 @@ import {
 	useContext,
 	useState,
 } from 'react';
-import { Tables } from '@/database';
 import { useCreateOrder } from '@/api/orders';
 import { router } from 'expo-router';
+import { useCreateOrderItems } from '@/api/order-items';
+import { Tables } from 'types/database';
 
 type Product = Tables<'products'>;
 
@@ -36,6 +37,8 @@ const CartProvider = ({ children }: PropsWithChildren) => {
 	const [items, setItems] = useState<CartItem[]>([]);
 
 	const { mutate: insertOrder } = useCreateOrder();
+	const { mutate: insertOrderItems } =
+		useCreateOrderItems();
 
 	const addItem = (
 		product: Product,
@@ -98,13 +101,25 @@ const CartProvider = ({ children }: PropsWithChildren) => {
 				total: totalAmount,
 			},
 			{
-				onSuccess: data => {
-					console.log(data);
-					clearCart();
-					router.push(`/(user)/orders/${data.id}`);
-				},
+				onSuccess: saveOrderItems,
 			}
 		);
+	};
+
+	const saveOrderItems = (order: Tables<'orders'>) => {
+		const orderItems = items.map(cartItem => ({
+			order_id: order.id,
+			product_id: cartItem.product_id,
+			quantity: cartItem.quantity,
+			size: cartItem.size,
+		}));
+
+		insertOrderItems(orderItems, {
+			onSuccess() {
+				clearCart();
+				router.push(`/(user)/orders/${order.id}`);
+			},
+		});
 	};
 
 	return (

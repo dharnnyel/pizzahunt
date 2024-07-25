@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import Colors from '@/constants/Colors';
-import { Tables } from '@/database';
+import { Tables } from 'types/database';
 
 type StatusSelectorProps = {
 	order: Tables<'orders'>;
