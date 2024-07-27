@@ -3,9 +3,12 @@ import {
 	FlatList,
 	Text,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import OrderListItem from '@/components/OrderListItem';
 import { useAdminOrderList } from '@/api/orders';
+import { supabase } from '@/lib/supabase';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCreateOrderSubscription } from '@/api/orders/subscriptions';
 
 const OrderScreen = () => {
 	const {
@@ -13,6 +16,8 @@ const OrderScreen = () => {
 		error,
 		isLoading,
 	} = useAdminOrderList({ archived: false });
+
+	useCreateOrderSubscription();
 
 	if (isLoading) {
 		return <ActivityIndicator />;

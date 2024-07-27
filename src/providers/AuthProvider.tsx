@@ -8,6 +8,7 @@ import {
 	useState,
 } from 'react';
 import { AppState } from 'react-native';
+import { Tables } from 'types/database';
 
 type AuthData = {
 	session: Session | null;
@@ -19,7 +20,7 @@ type AuthData = {
 const AuthContext = createContext<AuthData>({
 	session: null,
 	profile: null,
-	loading: false,
+	loading: true,
 	isAdmin: false,
 });
 
@@ -31,7 +32,9 @@ export const AuthProvider = ({
 	const [session, setSession] = useState<Session | null>(
 		null
 	);
-	const [profile, setProfile] = useState(null);
+	const [profile, setProfile] =
+		useState<Tables<'profiles'> | null>(null);
+
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -49,7 +52,7 @@ export const AuthProvider = ({
 					.select('*')
 					.eq('id', session.user.id)
 					.single();
-				setProfile(data || null);
+				setProfile(data);
 			}
 
 			setLoading(false);

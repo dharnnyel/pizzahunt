@@ -10,6 +10,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import OrderListItem from '@/components/OrderListItem';
 import OrderItemListItem from '@/components/OrderItemListItem';
 import { useOrderDetails } from '@/api/orders';
+import { useUpdateOrderSubscription } from '@/api/orders/subscriptions';
 
 const OrderDetails = () => {
 	const searchParam = useLocalSearchParams();
@@ -20,6 +21,8 @@ const OrderDetails = () => {
 			? stringId
 			: stringId[0]
 	);
+
+	useUpdateOrderSubscription(id);
 
 	const {
 		data: order,

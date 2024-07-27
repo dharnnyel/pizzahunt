@@ -36,7 +36,6 @@ const OrderDetails = () => {
 	const { mutate: updateOrder } = useUpdateOrder();
 
 	const updateStatus = (status: any) => {
-		console.warn(`${status}`);
 		updateOrder({
 			id: id,
 			updatedFields: { status },
