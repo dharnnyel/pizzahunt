@@ -7,9 +7,12 @@ import {
 import React from 'react';
 import { defaultPizzaImage } from './ProductListItem';
 import Colors from '@/constants/Colors';
+import { Tables } from 'types/database';
 
 type OrderItemListItemProps = {
-	item: OrderItem;
+	item: {
+		products: Tables<'products'> | null;
+	} & Tables<'order_items'>;
 };
 
 const OrderItemListItem: React.FC<
@@ -20,18 +23,18 @@ const OrderItemListItem: React.FC<
 			<View style={styles.leftSection}>
 				<Image
 					source={{
-						uri: item.products.image || defaultPizzaImage,
+						uri: item.products?.image || defaultPizzaImage,
 					}}
 					style={styles.image}
 					resizeMode='contain'
 				/>
 				<View>
 					<Text style={styles.name}>
-						{item.products.name}
+						{item.products?.name}
 					</Text>
 					<View style={styles.priceSize}>
 						<Text style={styles.price}>
-							${item.products.price.toFixed(2)}
+							${item.products?.price?.toFixed(2)}
 						</Text>
 						<Text style={styles.size}>
 							Size: {item.size}

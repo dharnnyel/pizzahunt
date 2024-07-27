@@ -10,6 +10,7 @@ import { Tables } from 'types/database';
 
 type StatusSelectorProps = {
 	order: Tables<'orders'>;
+	updateStatus: (status: any) => void;
 };
 
 const OrderStatusList: OrderStatus[] = [
@@ -21,6 +22,7 @@ const OrderStatusList: OrderStatus[] = [
 
 const StatusSelector: React.FC<StatusSelectorProps> = ({
 	order,
+	updateStatus,
 }) => {
 	return (
 		<>
@@ -37,7 +39,7 @@ const StatusSelector: React.FC<StatusSelectorProps> = ({
 					<Pressable
 						key={status}
 						// TODO: ADD FUNCTIONALITY FOR CHANGING THE STATUS OF AN ORDER
-						onPress={() => console.warn('Update status')}
+						onPress={() => updateStatus(status)}
 						style={{
 							borderColor: Colors.light.tint,
 							borderWidth: 1,

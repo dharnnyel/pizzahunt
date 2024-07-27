@@ -5,7 +5,7 @@ import {
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query';
-import { InsertTables } from 'types/database';
+import { InsertTables, UpdateTables } from 'types/database';
 
 const useAdminOrderList = ({ archived = false }) => {
 	const statuses = archived
@@ -55,11 +55,10 @@ const useOrderDetails = (id: number) => {
 	return useQuery({
 		queryKey: ['orders', id],
 		queryFn: async () => {
-			if (!id) return null;
 
 			const { data, error } = await supabase
 				.from('orders')
-				.select('*')
+				.select('*, order_items(*, products(*))')
 				.eq('id', id)
 				.single();
 
@@ -99,9 +98,45 @@ const useCreateOrder = () => {
 	});
 };
 
+const useUpdateOrder = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		async mutationFn({
+			id,
+			updatedFields,
+		}: {
+			id: number;
+			updatedFields: UpdateTables<'orders'>;
+		}) {
+			const { error, data: updatedOrder } = await supabase
+				.from('orders')
+				.update(updatedFields)
+				.eq('id', id)
+				.select()
+				.single();
+
+			if (error) {
+				throw new Error(error.message);
+			}
+
+			return updatedOrder;
+		},
+		async onSuccess(_, { id }) {
+			await queryClient.invalidateQueries({
+				queryKey: ['orders'],
+			});
+			await queryClient.invalidateQueries({
+				queryKey: ['orders', id],
+			});
+		},
+	});
+};
+
 export {
 	useAdminOrderList,
 	useUserOrderList,
 	useOrderDetails,
 	useCreateOrder,
+	useUpdateOrder,
 };

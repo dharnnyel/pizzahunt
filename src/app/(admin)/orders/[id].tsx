@@ -12,7 +12,10 @@ import products from '@assets/data/products';
 import OrderListItem from '@/components/OrderListItem';
 import OrderItemListItem from '@/components/OrderItemListItem';
 import StatusSelector from '@/components/StatusSelector';
-import { useOrderDetails } from '@/api/orders';
+import {
+	useOrderDetails,
+	useUpdateOrder,
+} from '@/api/orders';
 
 const OrderDetails = () => {
 	const searchParam = useLocalSearchParams();
@@ -29,6 +32,16 @@ const OrderDetails = () => {
 		error,
 		isLoading,
 	} = useOrderDetails(id);
+
+	const { mutate: updateOrder } = useUpdateOrder();
+
+	const updateStatus = (status: any) => {
+		console.warn(`${status}`);
+		updateOrder({
+			id: id,
+			updatedFields: { status },
+		});
+	};
 
 	if (!order) {
 		return <Text>Order not found</Text>;
@@ -57,7 +70,10 @@ const OrderDetails = () => {
 				)}
 				contentContainerStyle={{ gap: 10 }}
 				ListFooterComponent={() => (
-					<StatusSelector order={order} />
+					<StatusSelector
+						order={order}
+						updateStatus={updateStatus}
+					/>
 				)}
 			/>
 		</View>

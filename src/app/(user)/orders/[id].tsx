@@ -7,8 +7,6 @@ import {
 } from 'react-native';
 import React from 'react';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import orders from '@assets/data/orders';
-import products from '@assets/data/products';
 import OrderListItem from '@/components/OrderListItem';
 import OrderItemListItem from '@/components/OrderItemListItem';
 import { useOrderDetails } from '@/api/orders';
@@ -38,7 +36,7 @@ const OrderDetails = () => {
 	}
 
 	if (error) {
-		return <Text>Failed to fetch</Text>
+		return <Text>Failed to fetch</Text>;
 	}
 
 	return (
@@ -50,7 +48,7 @@ const OrderDetails = () => {
 			<OrderListItem order={order} />
 
 			<FlatList
-				data={order}
+				data={order.order_items}
 				renderItem={({ item }) => (
 					<OrderItemListItem item={item} />
 				)}

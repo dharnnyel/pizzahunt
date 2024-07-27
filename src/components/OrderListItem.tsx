@@ -8,7 +8,7 @@ import React from 'react';
 import { Link, useSegments } from 'expo-router';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Tables } from '@/database';
+import { Tables } from 'types/database';
 
 dayjs.extend(relativeTime);
 
