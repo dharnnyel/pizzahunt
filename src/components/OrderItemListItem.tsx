@@ -8,6 +8,7 @@ import React from 'react';
 import { defaultPizzaImage } from './ProductListItem';
 import Colors from '@/constants/Colors';
 import { Tables } from 'types/database';
+import RemoteImage from './RemoteImage';
 
 type OrderItemListItemProps = {
 	item: {
@@ -21,10 +22,9 @@ const OrderItemListItem: React.FC<
 	return (
 		<View style={styles.container}>
 			<View style={styles.leftSection}>
-				<Image
-					source={{
-						uri: item.products?.image || defaultPizzaImage,
-					}}
+				<RemoteImage
+					path={item.products?.image}
+					fallback={defaultPizzaImage}
 					style={styles.image}
 					resizeMode='contain'
 				/>

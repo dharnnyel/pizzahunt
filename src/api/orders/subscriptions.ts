@@ -2,9 +2,8 @@ import { supabase } from '@/lib/supabase';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-const queryClient = useQueryClient();
-
 const useCreateOrderSubscription = () => {
+	const queryClient = useQueryClient();
 	useEffect(() => {
 		const ordersSubscription = supabase
 			.channel('custom-insert-channel')
@@ -31,6 +30,7 @@ const useCreateOrderSubscription = () => {
 };
 
 const useUpdateOrderSubscription = (id: number) => {
+	const queryClient = useQueryClient();
 	useEffect(() => {
 		const orderSubscription = supabase
 			.channel('custom-update-channel')

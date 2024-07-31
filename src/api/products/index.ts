@@ -49,7 +49,7 @@ const useCreateProduct = () => {
 
 	return useMutation({
 		async mutationFn(productData: any) {
-			const { data, error } = await supabase
+			const { error, data: newProduct } = await supabase
 				.from('products')
 				.insert({
 					name: productData.name,
@@ -62,7 +62,7 @@ const useCreateProduct = () => {
 				throw new Error(error.message);
 			}
 
-			return data;
+			return newProduct;
 		},
 		async onSuccess() {
 			await queryClient.invalidateQueries({

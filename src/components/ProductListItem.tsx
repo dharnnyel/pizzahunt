@@ -8,6 +8,7 @@ import React from 'react';
 import Colors from '@/constants/Colors';
 import { Link, useSegments } from 'expo-router';
 import { Tables } from 'types/database';
+import RemoteImage from './RemoteImage';
 
 export const defaultPizzaImage =
 	'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png';
@@ -29,10 +30,9 @@ const ProductListItem: React.FC<ProductListItemProps> = ({
 			asChild
 		>
 			<Pressable style={styles.container}>
-				<Image
-					source={{
-						uri: product.image || defaultPizzaImage,
-					}}
+				<RemoteImage
+					path={product.image}
+					fallback={defaultPizzaImage}
 					style={styles.image}
 					resizeMode='contain'
 				/>

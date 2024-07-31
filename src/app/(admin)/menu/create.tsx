@@ -23,6 +23,11 @@ import {
 	useProduct,
 	useUpdateProduct,
 } from '@/api/products';
+import * as FileSystem from 'expo-file-system';
+import { randomUUID } from 'expo-crypto';
+import { supabase } from '@/lib/supabase';
+import { decode } from 'base64-arraybuffer';
+import RemoteImage from '@/components/RemoteImage';
 
 const CreateProduct = () => {
 	const [name, setName] = useState('');
@@ -46,10 +51,7 @@ const CreateProduct = () => {
 	const { data: updatingProduct } = useProduct(id);
 	const { mutate: deleteProduct } = useDeleteProduct();
 
-	console.log(updatingProduct);
-
 	useEffect(() => {
-		const updateProduct = updatingProduct!;
 		if (updatingProduct) {
 			setName(updatingProduct.name);
 			setPrice(updatingProduct.price?.toString() || '');
@@ -63,6 +65,7 @@ const CreateProduct = () => {
 	};
 
 	const validateInput = () => {
+		setErrors('');
 		if (!name) {
 			setErrors('Name is required');
 			return false;
@@ -79,16 +82,18 @@ const CreateProduct = () => {
 		return true;
 	};
 
-	const onCreate = () => {
+	const onCreate = async () => {
 		if (!validateInput()) {
 			return;
 		}
+
+		const imagePath = await uploadImage();
 
 		insertProduct(
 			{
 				name,
 				price: parseFloat(price),
-				image,
+				image: imagePath,
 			},
 			{
 				onSuccess: () => {
@@ -99,17 +104,19 @@ const CreateProduct = () => {
 		);
 	};
 
-	const onUpdate = () => {
+	const onUpdate = async () => {
 		if (!validateInput()) {
 			return;
 		}
+
+		const imagePath = await uploadImage();
 
 		updateProduct(
 			{
 				id,
 				name,
 				price: parseFloat(price),
-				image,
+				image: imagePath,
 			},
 			{
 				onSuccess: () => {
@@ -167,6 +174,31 @@ const CreateProduct = () => {
 		}
 	};
 
+	const uploadImage = async () => {
+		if (!image?.startsWith('file://')) {
+			return;
+		}
+
+		const base64 = await FileSystem.readAsStringAsync(
+			image,
+			{
+				encoding: 'base64',
+			}
+		);
+		const filePath = `${randomUUID()}.png`;
+		const contentType = 'image/png';
+
+		const { data, error } = await supabase.storage
+			.from('product-images')
+			.upload(filePath, decode(base64), { contentType });
+
+		console.log(`Error is: `,error);
+		if (data) {
+			console.log(data.path);
+			return data.path;
+		}
+	};
+
 	return (
 		<View style={styles.container}>
 			<Stack.Screen
@@ -177,8 +209,9 @@ const CreateProduct = () => {
 				}}
 			/>
 
-			<Image
-				source={{ uri: image || defaultPizzaImage }}
+			<RemoteImage
+				path={image}
+				fallback={defaultPizzaImage}
 				style={styles.image}
 			/>
 
